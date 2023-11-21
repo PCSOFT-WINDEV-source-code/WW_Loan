@@ -1,0 +1,9 @@
+[INFOS]
+gaf=0
+title=WW_Loan
+image=description.gif
+description=description.rtf
+source=1
+typesite=0
+[OBJECT]
+WW_Loan.wwp=4096

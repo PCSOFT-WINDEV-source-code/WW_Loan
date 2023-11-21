@@ -1,0 +1,293 @@
+#To edit and compare internal_properties, use WINDEV integrated tools.
+#Internal properties refer to the properties of controls in windows, reports, etc.
+info :
+ name : GlobalProcedures
+ major_version : 28
+ minor_version : 0
+ type : 7
+ description : ""
+ subtype : 0
+procedure_set :
+ identifier : 0x135fda5d00f0aafe
+ internal_properties : CAAAAAgAAABGLu41kG7fjQV3iS4F72qmnKaNh5694reolNKIW0iw
+ code_elements :
+  internal_properties : CAAAAAgAAADoVMOrY2u3jqhhaf+exLQtcz9zigJPK99Q+Zk/h/ElkoDdRPgZFHLW1f0BaiAAAsfFMmu4jIKbhCL6bw/Y8RK9PCsIhbmyq36HWfOR8Q==
+  type_code : 31
+  p_codes : []
+  procedures :
+   -
+     name : EndPaymentSchedule
+     internal_properties : CAAAAAgAAAC74sNBgmkCNUOVMVykGHqQWUF4LAyMeAUC7H8C+z+lCaKQg63JFRRRvIO9s4d6s/Hj8McKmvGJKSq1NMNVGqs3SjarJ7mxf4hLcG8qztqpzFsvEijjErx400unrReElULysZ6yZx1HEURbNGiQsP/So4W+YlfJ6foe9y+xPIARgJcXAvSKj9HYCo3Cbx8KAl3RI72wOII/LV6RZEgAP5INMDaS4u9dDCOFXGhNKTijhOe74J9/rHeiykwVmejP
+     procedure_id : 1396074502490794750
+     type_code : 15
+     code : |1-
+      // Syntax:
+      //EndPaymentSchedule (<nCapital>, <nMonthlyPayments>, <nRate>, <nNbPeriod>, <sDateFirstPayment>)
+      //
+      // Parameters:
+      //	nCapital: Amount of the capital
+      //	nMonthlyPayments: Amount of the monthly payments
+      //	nRate: Rate for the loan
+      //	nNbPeriod: Number of periods
+      //	sDateFirstPayment: Date of the first payment
+      // Return value:
+      // 	None
+      
+      procedure EndPaymentSchedule(nCapital, nMonthlyPayments, nRate, nNbPeriod, sDateFirstPayment)
+      
+      extern TABLE_LOAN_PAYMENT_SCHEDULE
+      extern TABLE_YEARLY_PAYMENT_SCHEDULE
+      
+      i							is int
+      nAmountMonthlyInterests		is currency
+      nAmountYearlyInterests		is currency
+      nAmountCumulatedInterests	is currency
+      nAmountMonthlyCapital		is currency
+      nAmountYearlyCapital		is currency
+      nAmountDue					is currency
+      dPaymentDate				is date
+      
+      TableDeleteAll(TABLE_LOAN_PAYMENT_SCHEDULE)
+      TableDeleteAll(TABLE_YEARLY_PAYMENT_SCHEDULE)
+      
+      // Date of first payment
+      dPaymentDate	= sDateFirstPayment
+      
+      // Total amount to pay
+      nAmountDue		= nCapital
+      
+      //Fill the payment schedule
+      for i=1 _to_ nNbPeriod
+      	
+      	// Calculate the interests for the period
+      	nAmountMonthlyInterests = FinPeriodInterest(nCapital, nRate, i, nNbPeriod)
+      	nAmountYearlyInterests += nAmountMonthlyInterests
+      	
+      	// Cumulated Interests
+      	nAmountCumulatedInterests+=nAmountMonthlyInterests
+      	
+      	// Calculate the capital for the period
+      	nAmountMonthlyCapital = nMonthlyPayments + nAmountMonthlyInterests
+      	nAmountYearlyCapital += nMonthlyPayments + nAmountMonthlyInterests
+      	
+      	// Amount due
+      	nAmountDue -= nAmountMonthlyCapital
+      	
+      	//Fill the monthly table
+      	// the rounded values are required when exporting to Excel
+      	TableAddLine(TABLE_LOAN_PAYMENT_SCHEDULE, i, dPaymentDate, Round(nMonthlyPayments), Round(-nAmountMonthlyInterests), Round(nAmountMonthlyCapital), Round(nAmountDue), Round(-nAmountCumulatedInterests))
+      	
+      	if modulo(i,12)=0 then
+      		//Fill the yearly table
+      		// the rounded values are required when exporting to Excel
+      		TableAddLine(TABLE_YEARLY_PAYMENT_SCHEDULE, i/12, dPaymentDate, Round(nMonthlyPayments*12), Round(-nAmountYearlyInterests), Round(nAmountYearlyCapital), Round(nAmountDue), Round(-nAmountCumulatedInterests))
+      		nAmountYearlyInterests	= 0
+      		nAmountYearlyCapital	= 0
+      	end
+      	
+      	dPaymentDate.Month++
+      end
+     type : 458752
+   -
+     name : DrawPie
+     internal_properties : CAAAAAgAAAD+T9EJd5j6AR7CP1i/2Zv+ONFGxWpHWTxVSxpEUMEwl9azsbEnWwHU2ZY7OajABtl825XQWnSlFEMjUBqTMp0gpfOXgAQqE5YTXCLNL6LrgOe0L3KpLLugguwZekdam1ofDIbN7iMc8a5y2sEl
+     procedure_id : 1396074502490860286
+     type_code : 15
+     code : |1+
+      // Syntax:
+      //DrawPie (<nCapital>, <nInterests>, <NamePieChart> is control)
+      //
+      // Parameters:
+      //	nCapital: Amount of the capital
+      //	nInterests: Amount of cumulated interests
+      //	NamePieChart (control): Name of the control
+      // Return value:
+      // 	None
+      
+      procedure DrawPie(nCapital, nInterests, PieChartControl is Control)
+      
+      // Deletes the previous content
+      grDeleteSeries(PieChartControl)
+      
+      // Define the colors of categories
+      grSeriesColor(PieChartControl, 1, RGB(228, 182, 45))
+      grSeriesColor(PieChartControl, 2, RGB(205, 95, 74))
+      
+      // Display mask
+      grMask(PieChartControl,grMaskValue, "999 999 999 €")
+      grMask(PieChartControl,grMaskPercent, "999,9 %")
+      
+      // Start angle of the first section
+      grStartAngle(PieChartControl, 0)
+      
+      // Subscript of section to offset
+      grPiePullOut(PieChartControl, 1, 20)
+      
+      // Example of data
+      grCategoryLabel(PieChartControl, 1, <§@1219a8ef00043d060000§>)
+      grAddData(PieChartControl, 1, nInterests)
+      grCategoryLabel(PieChartControl, 2, <§@1219a8ef00043d060001§>)
+      grAddData(PieChartControl, 1, nCapital)
+      
+      // Draw the chart
+      grDraw(PieChartControl)
+     type : 458752
+   -
+     name : DrawLines
+     procedure_id : 1396074502490925822
+     type_code : 15
+     code : |1-
+      // Syntax:
+      //DrawLines (<ChartName> is control, <sScheduleTableControl> is control)
+      //
+      // Parameters:
+      //	sChartControl (control): Name of control where the chart will be drawn
+      //	sScheduleTableControl (control): Name of the Table control containing the payment schedule
+      // Return value:
+      // 	None
+      
+      procedure DrawLines(sChartControl is champ, sScheduleTableControl is Control)
+      
+      // Local variables
+      i is int
+      
+      // Deletes the previous content
+      grDeleteSeries(sChartControl)
+      
+      // Display mask
+      grMask(sChartControl,grMaskValue, "999 999 999 €")
+      
+      // Series #1
+      // Color of series
+      grSeriesColor(sChartControl, 1, RGB(228, 182, 45))
+      
+      // Legend for the series
+      grSeriesLabel(sChartControl, 1, <§@1219a8ef00043d060000§>)
+      
+      // Add the "interest" data
+      for i=1 _to_ TableCount(sScheduleTableControl)
+      	grCategoryLabel(sChartControl, i, DateToString(sScheduleTableControl.COL_PAYMENT_DATE[i],"MM/YYYY"))
+      	grAddData(sChartControl, 1, sScheduleTableControl.COL_INTEREST[i])
+      end
+      
+      // Series #2
+      // Color of series
+      grSeriesColor(sChartControl, 2, RGB(205, 95, 74))
+      
+      // Legend for the series
+      grSeriesLabel(sChartControl, 2, <§@1219a8ef00043d060001§>)
+      
+      // Add the "capital" data
+      for i=1 _to_ TableCount(sScheduleTableControl)
+      	grAddData(sChartControl, 2, sScheduleTableControl.COL_CAPITAL[i])
+      end
+      
+      // Draw the chart
+      grDraw(sChartControl)
+     type : 458752
+   -
+     name : EndTotalInterest
+     internal_properties : CAAAAAgAAAA1aNgJsJJgOQmmCRtsWdEAaD2xq4xVsuXjKQ0xUYesgAjLoKWk8A6Us3dAOKIkNAnFJcRMMWDi1N701R1knUiafuELdeSKrDJUsqvnFokgEimtKBxXW8ky8RXdRXjzH/5ry9l5CgnqFDPBhGBhPB2g8vVhgX5RiLlBA6NloziTz3FG1HioPHGy0mBPegkvqJv2T934yuvQI492zgAANtpZwAQ=
+     procedure_id : 1396074502490991358
+     type_code : 15
+     code : |1-
+      // Syntax:
+      //[ <Result> = ] EndTotalInterest (<nCapital>, <nNbPeriods>, <nRate>)
+      //
+      // Parameters:
+      //	nCapital: <specify the role of nCapital>
+      //	nNbPeriods: <specify the role of nNbPeriods>
+      //	nRate: <specify the role of nRate>
+      // Return value:
+      // 	currency: Total amount of interests
+      
+      procedure EndTotalInterest(nCapital,nNbPeriods,nRate)
+      
+      i							is int
+      nInterestAmount				is currency
+      nAmountCumulatedInterests	is currency
+      dPaymentDate				is date
+      
+      //Fill the payment schedule
+      for i=1 _to_ nNbPeriods
+      	// Calculate the interests for the period
+      	nInterestAmount = FinPeriodInterest(nCapital, nRate, i, nNbPeriods)
+      	// Cumulated Interests
+      	nAmountCumulatedInterests+=nInterestAmount
+      	// Next month
+      	dPaymentDate.Month++
+      end
+      
+      // Total cost of loan
+      return nAmountCumulatedInterests
+     type : 458752
+   -
+     name : DrawInvestmentLines
+     procedure_id : 1396074502491056894
+     type_code : 15
+     code : |1-
+      procedure DrawInvestmentLines(sNameChartControl is Control)
+      
+      i is int
+      
+      // Deletes the previous content
+      grDeleteSeries(sNameChartControl)
+      
+      // Display mask
+      grMask(sNameChartControl,grMaskValue, "999 999 999 €")
+      
+      // Series #1
+      // Color of series
+      grSeriesColor(sNameChartControl, 1, RGB(228, 182, 45))
+      
+      // Legend for the series
+      grSeriesLabel(sNameChartControl, 1, <§@1219a8ef00043d060002§>)
+      
+      // Display the x-coordinates if there is enough room
+      grGraduate(sNameChartControl,-2000000000,grXCoordinate)
+      
+      // Add the "interest" data
+      for i=1 _to_ TableCount(PAGE_Investment.TABLE_INVESTMENT)
+      	grCategoryLabel(sNameChartControl, i, DateToString(PAGE_Investment.TABLE_INVESTMENT.COL_DEADLINE[i],"MMM YYYY"))
+      	grAddData(sNameChartControl, 1, PAGE_Investment.TABLE_INVESTMENT.COL_CUMULATED_INTERESTS[i])
+      end
+      
+      // Series #2
+      // Color of series
+      grSeriesColor(sNameChartControl, 2, RGB(205, 95, 74))
+      
+      // Legend for the series
+      grSeriesLabel(sNameChartControl, 2, <§@1219a8ef00043d060001§>)
+      
+      // Add the "capital" data
+      for i=1 _to_ TableCount(PAGE_Investment.TABLE_INVESTMENT)
+      	grAddData(sNameChartControl, 2, PAGE_Investment.TABLE_INVESTMENT.COL_CAPITAL[i])
+      end
+      
+      // Draw the chart
+      grDraw(sNameChartControl)
+     type : 458752
+  procedure_templates : []
+  property_templates : []
+ code_parameters :
+  internal_properties : CAAAAAgAAACVGQgYbalU7DKC3oH4ItDrjtcTHXXV/EuH8q0IbhyQlw==
+  original_name : ProceduresGlobales
+resources :
+ string_res :
+  identifier : 0x1219a8ef00043d06
+  internal_properties : CAAAAAgAAACm76HWfKGWp33VjXInA4cRlqArlgTTA862QGt72W2ld5Y=
+  strings :
+   -
+     text :
+      en-GB : Interests
+     index : 0
+   -
+     text :
+      en-GB : Capital
+     index : 1
+   -
+     text :
+      en-GB : Interests
+     index : 2
+custom_note :
+ internal_properties : CAAAAAgAAABtB9HWVzrXO2+4NDRVK0vmzaNKrCKqH1DBX30lMmGZ

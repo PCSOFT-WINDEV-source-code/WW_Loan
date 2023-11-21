@@ -1,0 +1,131 @@
+#To edit and compare internal_properties, use WINDEV integrated tools.
+#Internal properties refer to the properties of controls in windows, reports, etc.
+info :
+ name : WW_Loan
+ major_version : 28
+ minor_version : 0
+ type : 4097
+ description : WW_Loan
+ subtype : 0
+project :
+ identifier : 0x0
+ internal_properties : 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
+ configurations :
+  -
+    name : WW_Loan
+    internal_properties : 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
+    configuration_id : 2880079559253247958
+    type : 2
+    description : WW_Loan
+    generation_name : WW_Loan.wdl
+    version :
+     major_version : 28
+     minor_version : 38
+     internal_generation_version : 2
+    language : 2
+    64bits : true
+ elements :
+  identifier : 0x4acaf8170078b6ef
+  elements :
+   -
+     name : GlobalProcedures
+     identifier : 0x4219a8ef00003d06
+     internal_properties : CAAAAAgAAAAYdsDc65CYQwygOTCh/Mm6NqnFpQS3kxhygmEHkIKKXpJIr71uUtT7adPNK+vlnRP9BQ==
+     physical_name : .\GlobalProcedures.wdg
+     type : 7
+   -
+     name : GlobalBrowserProcedures
+     identifier : 0x4219a8ef00013e2f
+     internal_properties : CAAAAAgAAAA+JBYKuebO4e5OU86P0+uwDKnbgypU1/Gnvw7Ni3WncY9DrKCIeP6lx3FrVd0T7+ErKw==
+     physical_name : .\GlobalBrowserProcedures.wwn
+     type : 65539
+   -
+     name : PAGE_Investment
+     identifier : 0x4219be50000bbdeb
+     internal_properties : CAAAAAgAAAAacMLG5aIKFdKyN6IzKRNYSGl379RXemqnxqrUV8vJF9EB1vYk5GIJe6UfmRnXoxX/Bw==
+     physical_name : .\PAGE_Investment.wwh
+     type : 65538
+   -
+     name : RPT_Paymentschedule
+     identifier : 0x435fda51002a7bc1
+     internal_properties : CAAAAAgAAACimJqOPWpCXWX36E/z6GpOMG1vhy6g+zavUZ5FI81H2S+jImmwSOmBRv3n0VGPa12nrw==
+     physical_name : .\RPT_Paymentschedule.wde
+     type : 3
+   -
+     name : PAGE_Amount
+     identifier : 0x4219bbef000a74f7
+     internal_properties : CAAAAAgAAADWvD5iQT52ecaWq4bXT2PQBEFza+y3UxR3QklqMdE7PcNPQBwAwEZtn5kD/YV7B/nDQw==
+     physical_name : .\PAGE_Amount.wwh
+     type : 65538
+   -
+     name : RPT_Investment
+     identifier : 0x435fda5100287ba1
+     internal_properties : CAAAAAgAAADjbboRcmtZeWywotg7LM8yLpQ844SjXeFWNL6w45CNkjEVJ7jHG39uJNGuBaBwDvVm
+     physical_name : .\RPT_Investment.wde
+     type : 3
+   -
+     name : PAGE_Repayment
+     identifier : 0x4219ab4900066bbb
+     internal_properties : CAAAAAgAAAAhHRkNuufP4O9PWNeAou6rN0butoHEvMRWvYAr7iRukrJSp6WPcfWayHJsVNwU7NwkLA==
+     physical_name : .\PAGE_Repayment.wwh
+     type : 65538
+   -
+     name : PAGETPL_Center
+     identifier : 0x446ca6bc005a10a9
+     internal_properties : CAAAAAgAAACnkR0Jyvf3NJwiXWl0uLGtJvKwxN6Gid2k1uDfmrrJxqP6XJdNVLv4jhqVIg3tSrGi
+     physical_name : .\PAGETPL_Center.wwt
+     type : 65541
+  other_elements :
+   -
+     physical_name : .\Description.rtf
+   -
+     physical_name : .\Description.gif
+  net_assemblies : []
+  uwp_api : []
+  external_components : []
+  internal_components : []
+ common_generation_directory : true
+ wb_skin : 200 Willy
+ wb_color_palette : Phenix
+ languages :
+  - en-GB
+ wd_style_sheet : .\WWLoan.sty
+ url_rewriting :
+  internal_properties : CAAAAAgAAADkPzcUdUUS7wCiun+MCjqYH70RJdzkSv/nRvXZ3ENdikMa6bcHtsAH
+ code_elements :
+  internal_properties : CAAAAAgAAADniAes3UoQnifu+jEoiDNYUszd82hX0ojiSpeUAu2ed63r+Yw8L8JdGsj/DWGv+f0idsFo+cr0aGU/SoF2Cm9awxU6zJapXOWP
+  type_code : 0
+  p_codes :
+   -
+     code : |1-
+      
+     type : 196608
+   -
+     type : 196621
+   -
+     type : 196627
+     enabled : false
+  orphans :
+   -
+     name : WW_Loan
+     identifier : 0x4acaf8170083b7ab
+     code_elements :
+      type_code : 159
+      p_codes : []
+ code_parameters :
+  internal_properties : CAAAAAgAAACVGQgYbalU7DKC3oH4ItDrjtcTHXXV/EuH8q0IbhyQlw==
+  original_name : WWEmprunt
+rad :
+ internal_properties : CAAAAAgAAABhIL0UXeZmxDJxY3Xy0Q==
+project_explorer :
+ explorer_type : project
+resources :
+ string_res :
+  identifier : 0x0
+  internal_properties : CAAAAAgAAACm76HWfKGWp33VjXInA4cRlqArlgTTA862QGt72W2ld5Y=
+  strings :
+   -
+     text : {}
+     index : 0
+custom_note :
+ internal_properties : CAAAAAgAAAAd98VSJfHHqE3P0QHwrwdhn7ig8dWBR6valpUTgnAMTVXiDg==
